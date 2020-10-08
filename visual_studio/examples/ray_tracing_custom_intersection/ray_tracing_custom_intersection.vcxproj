@@ -77,22 +77,18 @@
     <Import Project="..\..\props\solution_directories.props" />
     <Import Project="..\..\props\linked_libs_debug.props" />
     <Import Project="..\..\props\rendering_api_vulkan.props" />
-    <Import Project="..\..\props\external_dependencies.props" />
-    <Import Project="..\..\props\extra_debug_dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Vulkan|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\props\solution_directories.props" />
     <Import Project="..\..\props\linked_libs_release.props" />
     <Import Project="..\..\props\rendering_api_vulkan.props" />
-    <Import Project="..\..\props\external_dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Publish_Vulkan|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\props\solution_directories.props" />
     <Import Project="..\..\props\linked_libs_release.props" />
     <Import Project="..\..\props\rendering_api_vulkan.props" />
-    <Import Project="..\..\props\external_dependencies.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Vulkan|x64'">

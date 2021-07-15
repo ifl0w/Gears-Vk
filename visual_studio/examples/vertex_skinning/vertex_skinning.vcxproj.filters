@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="precompiled_headers">
+      <UniqueIdentifier>{c25d2e52-037b-4361-bea2-f47eaae5977f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{9c7ad84d-7d82-46c9-a6d2-0732eb813865}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{32bf543f-6b9a-47b7-a216-8db53e0bb47e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cg_stdafx.cpp">
+      <Filter>precompiled_headers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\vertex_skinning\source\vertex_skinning.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cg_targetver.hpp">
+      <Filter>precompiled_headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cg_stdafx.hpp">
+      <Filter>precompiled_headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\assets\1st_party\models\skinning\skinning_test_tube_animation.fbx">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\..\..\examples\vertex_skinning\shaders\diffuse_shading_fixed_lightsource.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\examples\vertex_skinning\shaders\transform_and_pass_pos_nrm_uv.vert">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

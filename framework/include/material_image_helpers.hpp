@@ -474,6 +474,34 @@ namespace gvk
 		return Meta::create_from_data(aVerticesData);
 	}
 
+	// Helper which creates meta data for uniform/storage_texel_buffer_view from size specification
+	template <typename Meta>
+	auto set_up_meta_from_total_size_for_index_buffer(size_t aTotalSize, size_t aNumElements) requires has_set_format_for_index_buffer<Meta>
+	{
+		return Meta::create_from_total_size(aTotalSize, aNumElements).template set_format<glm::uvec3>(avk::content_description::index); // Combine 3 consecutive elements to one unit
+	}
+
+	// ...and another helper which creates metas for other Meta types:
+	template <typename Meta>
+	auto set_up_meta_from_total_size_for_index_buffer(size_t aTotalSize, size_t aNumElements) requires (!has_set_format_for_index_buffer<Meta>)
+	{
+		return Meta::create_from_total_size(aTotalSize, aNumElements);
+	}
+
+	// Helper which creates meta data for uniform/storage_texel_buffer_view from size specification
+	template <typename Meta>
+	auto set_up_meta_from_total_size_for_vertex_buffer(size_t aTotalSize, size_t aNumElements) requires has_describe_only_member<Meta>
+	{
+		return Meta::create_from_total_size(aTotalSize, aNumElements).describe_member(0, avk::format_for<glm::vec3>(), avk::content_description::position);
+	}
+
+	// ...and another helper which creates metas for other Meta types:
+	template <typename Meta>
+	auto set_up_meta_from_total_size_for_vertex_buffer(size_t aTotalSize, size_t aNumElements) requires (!has_describe_only_member<Meta>)
+	{
+		return Meta::create_from_total_size(aTotalSize, aNumElements);
+	}
+
 	/**	Get a tuple of two buffers, containing vertex positions and index positions, respectively, from the given input data.
 	 *	@param	aVerticesAndIndices			A tuple containing vertex positions data in the first element, and index data in the second element.
 	 *	@param	aUsageFlags					Additional usage flags that the buffers are created with.
@@ -588,14 +616,16 @@ namespace gvk
 			auto positionsBuffer = context().create_buffer(
 				avk::memory_usage::device, aUsageFlags,
 				avk::vertex_buffer_meta::create_from_total_size(totalPositionsSize, numPositions)
-				.describe_member(0, avk::format_for<glm::vec3>(), avk::content_description::position)
+				.describe_member(0, avk::format_for<glm::vec3>(), avk::content_description::position),
+				set_up_meta_from_total_size_for_vertex_buffer<Metas>(totalPositionsSize, numPositions)...
 			);
 
 			fill_device_buffer_from_cache(aSerializer, positionsBuffer, totalPositionsSize, aSyncHandler);
 
 			auto indexBuffer = context().create_buffer(
 				avk::memory_usage::device, aUsageFlags,
-				avk::index_buffer_meta::create_from_total_size(totalIndicesSize, numIndices)
+				avk::index_buffer_meta::create_from_total_size(totalIndicesSize, numIndices),
+				set_up_meta_from_total_size_for_index_buffer<Metas>(totalIndicesSize, numIndices)...
 			);
 
 			fill_device_buffer_from_cache(aSerializer, indexBuffer, totalIndicesSize, aSyncHandler);
@@ -684,7 +714,8 @@ namespace gvk
 
 			auto buffer = context().create_buffer(
 				avk::memory_usage::device, aUsageFlags,
-				avk::vertex_buffer_meta::create_from_total_size(bufferTotalSize, numBufferEntries)
+				avk::vertex_buffer_meta::create_from_total_size(bufferTotalSize, numBufferEntries),
+				Metas::create_from_total_size(bufferTotalSize, numBufferEntries).describe_only_member(aBufferData[0], aContentDescription)... // Note: the access to aBufferData would not be valid for empty arrays, but only the type, which is resolved during compile time, is used
 			);
 
 			fill_device_buffer_from_cache(aSerializer, buffer, bufferTotalSize, aSyncHandler);
